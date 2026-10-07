@@ -1,0 +1,47 @@
+rules_version = '2';
+
+// 4cus Firebase Storage security rules.
+//
+// Paths:
+//   profiles/{uid}/avatar.jpg            profile photos
+//   checkins/{groupId}/{uid_date}.jpg    daily check-in photos
+//   chat/{groupId}/{uuid}.jpg            chat images
+//
+// Group-scoped paths check membership via Firestore (firestore.get).
+
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isGroupMember(groupId) {
+      return isSignedIn()
+        && request.auth.uid in firestore.get(
+             /databases/(default)/documents/groups/$(groupId)
+           ).data.memberIds;
+    }
+
+    // Profile avatars: anyone signed in can view, only the owner writes.
+    match /profiles/{uid}/{allPaths=**} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn() && request.auth.uid == uid;
+    }
+
+    // Check-in photos: only group members.
+    match /checkins/{groupId}/{allPaths=**} {
+      allow read, write: if isGroupMember(groupId);
+    }
+
+    // Chat images: only group members.
+    match /chat/{groupId}/{allPaths=**} {
+      allow read, write: if isGroupMember(groupId);
+    }
+
+    // Default deny.
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}
