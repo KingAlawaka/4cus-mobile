@@ -1,0 +1,18 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <!-- Minimal 4cus mark: teal rounded square with a white focus ring -->
+    <path
+        android:fillColor="#0D9488"
+        android:pathData="M18,6h72a12,12 0 0,1 12,12v72a12,12 0 0,1 -12,12h-72a12,12 0 0,1 -12,-12v-72a12,12 0 0,1 12,-12z" />
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="7"
+        android:pathData="M54,32a22,22 0 1,0 0.1,0a22,22 0 1,0 -0.1,0z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M54,48a6,6 0 1,0 0.1,0a6,6 0 1,0 -0.1,0z" />
+</vector>
